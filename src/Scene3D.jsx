@@ -7,8 +7,8 @@ import * as THREE from 'three';
 const IMAGE_NUMBERS = Array.from({ length: 20 }, (_, i) => String(i + 1).padStart(2, '0'));
 const TOTAL = IMAGE_NUMBERS.length;
 
-// Radius decreased to 1.76 (20% reduction from 2.2) to pull cards tightly inward
-const RADIUS_CIRCLE = 1.76;
+// Radius increased to 1.936 (10% expansion from 1.76) to slightly expand the layout
+const RADIUS_CIRCLE = 1.936;
 const ORBIT_SPEED = 0.05; // ~58% speed reduction for calm movement
 
 function ImageCard({ 
@@ -90,7 +90,7 @@ function ImageCard({
       let targetOpacityVal = 1.0;
 
       if (hasSelection) {
-        targetScaleVal = isSelected ? 7.605 : 3.6;
+        targetScaleVal = isSelected ? 8.3655 : 3.6;
         targetZVal = isSelected ? 10.0 : index * 0.001;
 
         let relIndex = index - selectedCardIndex;
@@ -217,10 +217,10 @@ function ImageCard({
     // Only apply selection/hover changes once the circle layout has formed
     if (!isCircleReady) return;
 
-    // 1. Target Scale: default 1.248, hover 2.7456 (30% scale enlargement). In detail view: selected is 7.605, non-selected is 3.6
+    // 1. Target Scale: default 1.248, hover 2.7456 (30% scale enlargement). In detail view: selected is 8.3655 (10% enlargement), non-selected is 3.6
     let targetScale = 1.248;
     if (hasSelection) {
-      targetScale = isSelected ? 7.605 : 3.6;
+      targetScale = isSelected ? 8.3655 : 3.6;
     } else {
       if (cardHovered) {
         targetScale = 2.7456;

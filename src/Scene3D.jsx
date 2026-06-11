@@ -7,8 +7,8 @@ import * as THREE from 'three';
 const IMAGE_NUMBERS = Array.from({ length: 20 }, (_, i) => String(i + 1).padStart(2, '0'));
 const TOTAL = IMAGE_NUMBERS.length;
 
-// Radius increased to 1.936 (10% expansion from 1.76) to slightly expand the layout
-const RADIUS_CIRCLE = 1.936;
+// Radius slightly expanded to 2.05 (~6% expansion from 1.936) to give cards breathing room
+const RADIUS_CIRCLE = 2.05;
 const ORBIT_SPEED = 0.05; // ~58% speed reduction for calm movement
 
 function ImageCard({ 
@@ -609,7 +609,7 @@ export default function Scene3D({
     <div className="canvas-container" style={{ width: '100vw', height: '100vh', overflow: 'hidden', position: 'absolute', top: 0, left: 0 }}>
       <Canvas
         orthographic
-        camera={{ zoom: 240, position: [0, 0, 35], near: 0.1, far: 1000 }}
+        camera={{ zoom: 230, position: [0, 0, 35], near: 0.1, far: 1000 }}
         gl={{ antialias: true, alpha: true }}
         onPointerMissed={onBackgroundClick}
       >
@@ -632,7 +632,7 @@ export default function Scene3D({
 
         {/* 'More to explore' button text layered below the selected card */}
         <Html
-          position={[0, -1.45, 10.1]}
+          position={[0, -1.56, 10.1]}
           center
           style={{
             opacity: isSelected ? 1 : 0,
@@ -659,7 +659,7 @@ export default function Scene3D({
               alignItems: 'center',
               justifyContent: 'center',
               pointerEvents: isSelected ? 'auto' : 'none',
-              transform: 'translateY(10px)'
+              transform: 'translateY(15px)'
             }}
             onClick={(e) => {
               e.stopPropagation();

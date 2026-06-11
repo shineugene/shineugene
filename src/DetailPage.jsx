@@ -266,7 +266,7 @@ export default function DetailPage({ selectedCardIndex }) {
             <span style={{
               fontFamily: "'Aeonik-SemiBold', sans-serif",
               fontWeight: 600,
-              fontSize: '19px',
+              fontSize: '14px',
               letterSpacing: '-0.03em',
               color: '#555555',
               textTransform: 'uppercase'
@@ -278,7 +278,7 @@ export default function DetailPage({ selectedCardIndex }) {
               style={{
                 fontFamily: "'Aeonik-SemiBold', sans-serif",
                 fontWeight: 600,
-                fontSize: '19px',
+                fontSize: '14px',
                 letterSpacing: '-0.03em',
                 color: '#999999',
                 cursor: 'pointer',
@@ -292,7 +292,7 @@ export default function DetailPage({ selectedCardIndex }) {
           <div style={{
             fontFamily: "'BookkGothic-Bold', sans-serif",
             fontWeight: 'normal',
-            fontSize: '20px',
+            fontSize: '19px',
             lineHeight: 1.6,
             letterSpacing: '-0.03em',
             color: '#1d1d1d',

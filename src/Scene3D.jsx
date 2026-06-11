@@ -7,8 +7,8 @@ import * as THREE from 'three';
 const IMAGE_NUMBERS = Array.from({ length: 20 }, (_, i) => String(i + 1).padStart(2, '0'));
 const TOTAL = IMAGE_NUMBERS.length;
 
-// Radius increased by 1.5x (from 1.8 to 2.7) to populate the wide viewport margins with high impact
-const RADIUS_CIRCLE = 2.7;
+// Radius decreased to 2.2 to place the top orbit beautifully below the screen logos without overflow
+const RADIUS_CIRCLE = 2.2;
 const ORBIT_SPEED = 0.05; // ~58% speed reduction for calm movement
 
 function ImageCard({ 
@@ -85,7 +85,7 @@ function ImageCard({
 
       const isSelected = selectedCardIndex === index;
       const hasSelection = selectedCardIndex !== null;
-      let targetScaleVal = 0.96;
+      let targetScaleVal = 1.248;
       let targetZVal = index * 0.001;
       let targetOpacityVal = 1.0;
 
@@ -160,9 +160,9 @@ function ImageCard({
       });
 
       gsap.to(meshRef.current.scale, {
-        x: 0.96,
-        y: 0.96,
-        z: 0.96,
+        x: 1.248,
+        y: 1.248,
+        z: 1.248,
         duration: 1.1,
         delay,
         ease: 'power3.inOut',
@@ -217,13 +217,13 @@ function ImageCard({
     // Only apply selection/hover changes once the circle layout has formed
     if (!isCircleReady) return;
 
-    // 1. Target Scale: default 0.96, hover 2.112. In detail view: selected is 7.605 (20% increase of 6.3375), non-selected is 3.6
-    let targetScale = 0.96;
+    // 1. Target Scale: default 1.248, hover 2.7456 (30% scale enlargement). In detail view: selected is 7.605, non-selected is 3.6
+    let targetScale = 1.248;
     if (hasSelection) {
       targetScale = isSelected ? 7.605 : 3.6;
     } else {
       if (cardHovered) {
-        targetScale = 2.112;
+        targetScale = 2.7456;
       }
     }
 
@@ -463,7 +463,7 @@ function ImageCard({
         ref={hitboxRef}
         position={[targetPosition[0], targetPosition[1], targetPosition[2]]}
         rotation={[0, 0, 0]}
-        scale={[0.96, 0.96, 0.96]}
+        scale={[1.248, 1.248, 1.248]}
         onPointerOver={(e) => {
           e.stopPropagation();
           if (!isCircleReady) return;
@@ -480,9 +480,9 @@ function ImageCard({
 
           if (selectedCardIndex === null) {
             gsap.to(meshRef.current.scale, {
-              x: 0.96,
-              y: 0.96,
-              z: 0.96,
+              x: 1.248,
+              y: 1.248,
+              z: 1.248,
               duration: 0.3,
               ease: 'power2.out',
               overwrite: 'auto'
@@ -520,7 +520,7 @@ function ImageCard({
         ref={meshRef}
         position={[targetPosition[0], targetPosition[1], targetPosition[2]]}
         rotation={[0, 0, 0]}
-        scale={[0.96, 0.96, 0.96]}
+        scale={[1.248, 1.248, 1.248]}
       >
         <planeGeometry args={[0.3, 0.4]} />
         <meshBasicMaterial

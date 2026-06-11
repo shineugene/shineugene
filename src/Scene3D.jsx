@@ -7,8 +7,8 @@ import * as THREE from 'three';
 const IMAGE_NUMBERS = Array.from({ length: 20 }, (_, i) => String(i + 1).padStart(2, '0'));
 const TOTAL = IMAGE_NUMBERS.length;
 
-// Radius decreased by ~17% (from 2.16 to 1.8) to fit within viewport with comfortable top/bottom margins
-const RADIUS_CIRCLE = 1.8;
+// Radius increased by 1.5x (from 1.8 to 2.7) to populate the wide viewport margins with high impact
+const RADIUS_CIRCLE = 2.7;
 const ORBIT_SPEED = 0.05; // ~58% speed reduction for calm movement
 
 function ImageCard({ 
@@ -593,10 +593,10 @@ export default function Scene3D({
   const isSelected = selectedCardIndex !== null;
 
   return (
-    <div className="canvas-container">
+    <div className="canvas-container" style={{ width: '100vw', height: '100vh', overflow: 'hidden', position: 'absolute', top: 0, left: 0 }}>
       <Canvas
         orthographic
-        camera={{ zoom: 195, position: [0, 0, 50], near: 0.1, far: 1000 }}
+        camera={{ zoom: 240, position: [0, 0, 35], near: 0.1, far: 1000 }}
         gl={{ antialias: true, alpha: true }}
         onPointerMissed={onBackgroundClick}
       >

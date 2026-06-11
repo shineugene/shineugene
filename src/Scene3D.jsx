@@ -659,7 +659,7 @@ export default function Scene3D({
               alignItems: 'center',
               justifyContent: 'center',
               pointerEvents: isSelected ? 'auto' : 'none',
-              transform: 'translateY(15px)'
+              transform: 'translateY(45px)'
             }}
             onClick={(e) => {
               e.stopPropagation();

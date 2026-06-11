@@ -207,6 +207,21 @@ export default function App() {
           <DetailPage selectedCardIndex={cachedDetailIndex !== null ? cachedDetailIndex : selectedCardIndex} />
         )}
       </div>
+
+      {/* Global Copyright Overlay */}
+      <div style={{
+        position: 'fixed',
+        right: '40px',
+        bottom: '40px',
+        fontFamily: "'Aeonik Fono', monospace",
+        fontSize: '10px',
+        color: '#999999',
+        letterSpacing: '-0.03em',
+        pointerEvents: 'none',
+        zIndex: 100
+      }}>
+        ©SHINEUGENE. All rights reserved.
+      </div>
     </div>
   );
 }

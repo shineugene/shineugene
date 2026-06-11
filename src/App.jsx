@@ -214,9 +214,9 @@ export default function App() {
         right: '40px',
         bottom: '40px',
         fontFamily: "'Aeonik Fono', monospace",
-        fontSize: '10px',
+        fontSize: '15px',
         color: '#999999',
-        letterSpacing: '-0.03em',
+        letterSpacing: 'normal',
         pointerEvents: 'none',
         zIndex: 100
       }}>

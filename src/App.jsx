@@ -175,7 +175,7 @@ export default function App() {
             src="/logo-left.svg" 
             alt="Logo Left" 
             style={{ 
-              height: '26.4px',
+              height: '31.68px',
               pointerEvents: 'auto' 
             }} 
           />
@@ -183,7 +183,7 @@ export default function App() {
             src="/logo-right.svg" 
             alt="Logo Right" 
             style={{ 
-              height: '26.4px',
+              height: '31.68px',
               pointerEvents: 'auto' 
             }} 
           />

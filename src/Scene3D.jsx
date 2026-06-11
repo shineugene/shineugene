@@ -58,6 +58,19 @@ function ImageCard({
     }
   }, [texture]);
 
+  // Opening Fade-in: Opacity 0 -> 1 with random stagger delays on mount
+  useEffect(() => {
+    if (materialRef.current) {
+      materialRef.current.opacity = 0;
+      gsap.to(materialRef.current, {
+        opacity: 1.0,
+        duration: 1.0,
+        delay: Math.random() * 0.4,
+        ease: 'power2.out'
+      });
+    }
+  }, []);
+
   // Transition: linear/scattered <-> circle
   useEffect(() => {
     // Hard reset card hover state on layout transition to prevent ghost hover states
@@ -90,7 +103,7 @@ function ImageCard({
       let targetOpacityVal = 1.0;
 
       if (hasSelection) {
-        targetScaleVal = isSelected ? 8.3655 : 3.6;
+        targetScaleVal = isSelected ? 10.0386 : 3.6;
         targetZVal = isSelected ? 10.0 : index * 0.001;
 
         let relIndex = index - selectedCardIndex;
@@ -217,13 +230,13 @@ function ImageCard({
     // Only apply selection/hover changes once the circle layout has formed
     if (!isCircleReady) return;
 
-    // 1. Target Scale: default 1.248, hover 2.7456 (30% scale enlargement). In detail view: selected is 8.3655 (10% enlargement), non-selected is 3.6
+    // 1. Target Scale: default 1.248, hover 2.196 (20% scale reduction from 2.7456). In detail view: selected is 10.0386, non-selected is 3.6
     let targetScale = 1.248;
     if (hasSelection) {
-      targetScale = isSelected ? 8.3655 : 3.6;
+      targetScale = isSelected ? 10.0386 : 3.6;
     } else {
       if (cardHovered) {
-        targetScale = 2.7456;
+        targetScale = 2.196;
       }
     }
 
@@ -645,7 +658,8 @@ export default function Scene3D({
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              pointerEvents: isSelected ? 'auto' : 'none'
+              pointerEvents: isSelected ? 'auto' : 'none',
+              transform: 'translateY(10px)'
             }}
             onClick={(e) => {
               e.stopPropagation();

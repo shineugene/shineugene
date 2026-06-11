@@ -7,8 +7,8 @@ import * as THREE from 'three';
 const IMAGE_NUMBERS = Array.from({ length: 20 }, (_, i) => String(i + 1).padStart(2, '0'));
 const TOTAL = IMAGE_NUMBERS.length;
 
-// Radius decreased to 2.2 to place the top orbit beautifully below the screen logos without overflow
-const RADIUS_CIRCLE = 2.2;
+// Radius decreased to 1.76 (20% reduction from 2.2) to pull cards tightly inward
+const RADIUS_CIRCLE = 1.76;
 const ORBIT_SPEED = 0.05; // ~58% speed reduction for calm movement
 
 function ImageCard({ 
@@ -549,7 +549,7 @@ export default function Scene3D({
   const isHoverPaused = useRef(false);
 
   const cardsData = useMemo(() => {
-    const spacing = 0.38;
+    const spacing = 0.42;
 
     const groupA = [1.6, 1.87, 2.14, 2.41, 2.68];
     const groupB = [-2.68, -2.41, -2.14, -1.87, -1.6];

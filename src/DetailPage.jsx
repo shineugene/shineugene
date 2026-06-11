@@ -292,7 +292,7 @@ export default function DetailPage({ selectedCardIndex }) {
           <div style={{
             fontFamily: "'BookkGothic-Bold', sans-serif",
             fontWeight: 'normal',
-            fontSize: '15px',
+            fontSize: '18px',
             lineHeight: 1.6,
             letterSpacing: '-0.03em',
             color: '#1d1d1d',

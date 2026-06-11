@@ -214,13 +214,13 @@ export default function App() {
         right: '40px',
         bottom: '40px',
         fontFamily: "'Aeonik Fono', monospace",
-        fontSize: '15px',
+        fontSize: '12px',
         color: '#999999',
         letterSpacing: 'normal',
         pointerEvents: 'none',
         zIndex: 100
       }}>
-        ©SHINEUGENE. All rights reserved.
+        ©foundfounded. All rights reserved.
       </div>
     </div>
   );

@@ -196,10 +196,25 @@ export default function App() {
             fontSize: '20.2px',
             color: '#333333',
             letterSpacing: '-0.03em',
-            whiteSpace: 'nowrap'
+            whiteSpace: 'nowrap',
+            textAlign: 'center'
           }}
         >
           Discover the value in essence.
+        </div>
+        <div 
+          style={{
+            fontFamily: "'Aeonik-SemiBold', sans-serif",
+            fontWeight: 600,
+            fontSize: '20.2px',
+            color: '#333333',
+            letterSpacing: '-0.03em',
+            whiteSpace: 'nowrap',
+            textAlign: 'center',
+            marginTop: '4px'
+          }}
+        >
+          found–from–Founded.
         </div>
       </div>
 

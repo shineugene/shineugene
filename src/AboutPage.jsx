@@ -1,90 +1,18 @@
-import React, { useEffect, useRef, useState, Suspense } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { Environment } from '@react-three/drei';
-import * as THREE from 'three';
+import React, { useEffect, useRef } from 'react';
 import Matter from 'matter-js';
 
 const BOXES_DATA = [
-  { text: "Watch", color: "#F96565", fontSize: "9.5vw" },
-  { text: "Listen", color: "#6DB2F2", fontSize: "10vw" },
-  { text: "Read", color: "#C1E8E4", fontSize: "11.5vw" },
-  { text: "Speak", color: "#E8A2D2", fontSize: "10.5vw" },
-  { text: "Follow the Noise", color: "#B5E3AD", fontSize: "7.2vw" },
-  { text: "found–from–Founded.", color: "#FFFFFF", fontSize: "6.2vw" }
+  { text: "Watch", color: "#F96565", fontSize: "11rem" },
+  { text: "Listen", color: "#6DB2F2", fontSize: "12rem" },
+  { text: "Read", color: "#C1E8E4", fontSize: "14rem" },
+  { text: "Speak", color: "#E8A2D2", fontSize: "13rem" },
+  { text: "Follow the Noise", color: "#B5E3AD", fontSize: "8.5rem" },
+  { text: "found–from–Founded.", color: "#FFFFFF", fontSize: "7.5rem" }
 ];
-
-function VideoSphere({ mouseRef }) {
-  const meshRef = useRef();
-  const [videoTexture, setVideoTexture] = useState(null);
-
-  useEffect(() => {
-    // Manually load and configure HTML5 video to prevent rendering blocks
-    const video = document.createElement('video');
-    video.src = '/about-video.mp4';
-    video.muted = true;
-    video.loop = true;
-    video.playsInline = true;
-    video.autoplay = true;
-    video.crossOrigin = 'anonymous';
-
-    const handleCanPlay = () => {
-      const texture = new THREE.VideoTexture(video);
-      texture.colorSpace = THREE.SRGBColorSpace;
-      setVideoTexture(texture);
-    };
-
-    video.addEventListener('canplaythrough', handleCanPlay);
-    video.play().catch(err => {
-      console.warn("Video playback was blocked or failed to load:", err);
-    });
-
-    return () => {
-      video.removeEventListener('canplaythrough', handleCanPlay);
-      video.pause();
-      video.src = '';
-      video.load();
-    };
-  }, []);
-
-  const passiveRotY = useRef(0);
-
-  useFrame((state, delta) => {
-    if (!meshRef.current) return;
-
-    // Slow, continuous passive rotation to keep the sphere alive when stationary
-    passiveRotY.current += delta * 0.05;
-
-    // Target rotation based on pointer coordinates [-1, 1] plus passive rotation
-    const targetRotX = mouseRef.current.y * 0.45;
-    const targetRotY = mouseRef.current.x * 0.45 + passiveRotY.current;
-
-    // Smooth lerp rotation for elastic response
-    meshRef.current.rotation.x = THREE.MathUtils.lerp(meshRef.current.rotation.x, targetRotX, 0.05);
-    meshRef.current.rotation.y = THREE.MathUtils.lerp(meshRef.current.rotation.y, targetRotY, 0.05);
-  });
-
-  return (
-    <mesh ref={meshRef}>
-      <sphereGeometry args={[1.5, 64, 64]} />
-      <meshPhysicalMaterial
-        map={videoTexture || null}
-        color={videoTexture ? '#ffffff' : '#fefbc6'} // Warm background matching color when loading
-        roughness={0.1}
-        metalness={0.15}
-        clearcoat={1.0}
-        clearcoatRoughness={0.02}
-        reflectivity={0.95}
-        transmission={videoTexture ? 0.0 : 0.45} // Translucent glass effect if video isn't ready
-        thickness={1.2}
-      />
-    </mesh>
-  );
-}
 
 export default function AboutPage() {
   const containerRef = useRef(null);
   const boxRefs = useRef([]);
-  const mouseRef = useRef({ x: 0, y: 0 });
 
   const handleBackClick = () => {
     window.location.hash = '/';
@@ -92,13 +20,6 @@ export default function AboutPage() {
 
   useEffect(() => {
     if (!containerRef.current) return;
-
-    // Track pointer globally (handles mouse & touch) to rotate sphere while interacting
-    const handlePointerMove = (e) => {
-      mouseRef.current.x = (e.clientX / window.innerWidth) * 2 - 1;
-      mouseRef.current.y = -(e.clientY / window.innerHeight) * 2 + 1;
-    };
-    window.addEventListener('pointermove', handlePointerMove);
 
     // Matter.js module aliases
     const { Engine, World, Bodies, Composite, Mouse, MouseConstraint } = Matter;
@@ -131,8 +52,8 @@ export default function AboutPage() {
     // Create card bodies dynamically using offsetWidth/Height on mount
     const bodies = BOXES_DATA.map((box, i) => {
       const el = boxRefs.current[i];
-      const w = el ? el.offsetWidth : 300;
-      const h = el ? el.offsetHeight : 100;
+      const w = el ? el.offsetWidth : 400;
+      const h = el ? el.offsetHeight : 150;
 
       // Freeze DOM dimensions in pixel values to prevent misalignment on resize
       if (el) {
@@ -144,7 +65,9 @@ export default function AboutPage() {
       const minX = w / 2;
       const maxX = Math.max(w / 2, width - w / 2);
       const startX = minX + Math.random() * (maxX - minX);
-      const startY = -120 - i * 180;
+      
+      // Increased vertical stagger offset (400px) to prevent massive cards from colliding offscreen
+      const startY = -200 - i * 400;
 
       const body = Bodies.rectangle(startX, startY, w, h, {
         restitution: 0.55,
@@ -193,7 +116,6 @@ export default function AboutPage() {
 
     // Animation frame loop
     let animFrameId;
-    let frameCount = 0;
     const updatePhysics = () => {
       Engine.update(engine, 1000 / 60);
 
@@ -218,7 +140,6 @@ export default function AboutPage() {
     return () => {
       cancelAnimationFrame(animFrameId);
       window.removeEventListener('resize', handleResize);
-      window.removeEventListener('pointermove', handlePointerMove);
       
       if (mouse.element) {
         Mouse.clearSourceEvents(mouse);
@@ -262,32 +183,7 @@ export default function AboutPage() {
         ← Back
       </div>
 
-      {/* Layer 2: 3D Video Sphere Canvas */}
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        zIndex: 5,
-        pointerEvents: 'none' // Allow mouse events to pass through to container for Matter.js dragging
-      }}>
-        <Canvas
-          camera={{ position: [0, 0, 5], fov: 45 }}
-          gl={{ antialias: true, alpha: true }}
-          style={{ width: '100%', height: '100%' }}
-        >
-          <ambientLight intensity={0.6} />
-          <directionalLight position={[3, 3, 5]} intensity={0.8} />
-          <pointLight position={[-3, -3, 3]} intensity={0.3} />
-          <Suspense fallback={null}>
-            <VideoSphere mouseRef={mouseRef} />
-          </Suspense>
-          <Environment preset="city" />
-        </Canvas>
-      </div>
-
-      {/* Layer 3: Physics HTML Text boxes */}
+      {/* Layer 2: Physics HTML Text boxes (rendered on top of solid background) */}
       <div style={{
         position: 'absolute',
         top: 0,
@@ -316,7 +212,7 @@ export default function AboutPage() {
               fontWeight: 600,
               color: '#000000',
               letterSpacing: '-0.03em',
-              padding: '0.02em 0.15em',
+              padding: '0.01em 0.1em', // Ultra-tight padding
               lineHeight: 0.9,
               userSelect: 'none',
               cursor: 'grab',

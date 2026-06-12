@@ -3,11 +3,9 @@ import gsap from 'gsap';
 
 export default function Preloader({ onComplete }) {
   const preloaderRef = useRef();
-  const leftCircleRef = useRef();
-  const rightCircleRef = useRef();
-  const logoWrapperRef = useRef();
-  const logoRef = useRef();
-  const greetingTextRef = useRef();
+  const leftRef = useRef();
+  const centerRef = useRef();
+  const rightRef = useRef();
 
   // Keep a stable reference to the onComplete callback to avoid triggering useEffect runs
   const onCompleteRef = useRef(onComplete);
@@ -19,22 +17,20 @@ export default function Preloader({ onComplete }) {
     const ctx = gsap.context(() => {
       // Set initial state values via GSAP to ensure precision
       gsap.set(preloaderRef.current, {
-        backgroundColor: '#ffffff'
+        backgroundColor: '#000000',
+        y: '0%'
       });
-      gsap.set(leftCircleRef.current, { 
-        attr: { r: 0 },
-        x: 0 
-      });
-      gsap.set(rightCircleRef.current, { 
-        attr: { r: 0 },
-        x: 0 
-      });
-      gsap.set(logoWrapperRef.current, { 
+      gsap.set(centerRef.current, {
         opacity: 0,
-        filter: 'blur(15px)'
+        y: 15 // Pushed slightly down initially
       });
-      gsap.set(greetingTextRef.current, { 
-        opacity: 0
+      gsap.set(leftRef.current, {
+        opacity: 0,
+        x: -25 // Pushed slightly to the left initially
+      });
+      gsap.set(rightRef.current, {
+        opacity: 0,
+        x: 25 // Pushed slightly to the right initially
       });
 
       const tl = gsap.timeline({
@@ -43,49 +39,39 @@ export default function Preloader({ onComplete }) {
         }
       });
 
-      // --- Phase 1: 망원경 시야 열림 (0s ~ 1.0s) ---
-      // The circles expand and separate horizontally, cutting a figure-8 shape in the mask
-      tl.to(leftCircleRef.current, {
-        attr: { r: 260 },
-        x: -120,
-        duration: 1.0,
-        ease: 'power3.inOut'
-      }, 0)
-      .to(rightCircleRef.current, {
-        attr: { r: 260 },
-        x: 120,
-        duration: 1.0,
-        ease: 'power3.inOut'
+      // --- Phase 1: 슬래시(/) 등장 (0초 지점) ---
+      tl.to(centerRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power3.out'
       }, 0);
 
-      // --- Phase 2: 로고 스르륵 포커싱 (1.0s ~ 2.0s) ---
-      tl.to(logoWrapperRef.current, {
+      // --- Phase 2: 좌측 'found' 등장 (0.4초 지점) ---
+      // Slides from left to right (x: -25 -> 0) to align with center slash
+      tl.to(leftRef.current, {
         opacity: 1,
-        filter: 'blur(0px)',
-        duration: 1.0,
-        ease: 'power2.out'
-      }, 1.0);
+        x: 0,
+        duration: 0.8,
+        ease: 'power3.out'
+      }, 0.4);
 
-      // --- Phase 3: 환영 문구로 전환 (2.5s ~ 3.5s) ---
-      // Logo fades out and the greeting text fades in in parallel
-      tl.to(logoWrapperRef.current, {
-        opacity: 0,
-        duration: 1.0,
-        ease: 'power2.inOut'
-      }, 2.5)
-      .to(greetingTextRef.current, {
+      // --- Phase 3: 우측 'Founded' 등장 (0.8초 지점) ---
+      // Slides from right to left (x: 25 -> 0) to align with center slash
+      tl.to(rightRef.current, {
         opacity: 1,
-        duration: 1.0,
-        ease: 'power2.inOut'
-      }, 2.5);
+        x: 0,
+        duration: 0.8,
+        ease: 'power3.out'
+      }, 0.8);
 
-      // --- Phase 4: 화면 입장 (4.0s ~ 4.8s) ---
-      // Hold for 0.5s (3.5s to 4.0s) then swipe up the preloader
+      // --- Phase 4: 화면 입장 (2.0초 지점) ---
+      // Hold for 0.4s (from 1.6s when Phase 3 ends to 2.0s) then swipe up
       tl.to(preloaderRef.current, {
         y: '-100%',
         duration: 0.8,
         ease: 'power3.inOut'
-      }, 4.0);
+      }, 2.0);
 
     }, preloaderRef);
 
@@ -102,121 +88,79 @@ export default function Preloader({ onComplete }) {
         left: 0,
         width: '100vw',
         height: '100vh',
-        backgroundColor: '#ffffff',
+        backgroundColor: '#000000',
         zIndex: 9999,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
         overflow: 'hidden',
         userSelect: 'none',
         willChange: 'transform'
       }}
     >
-      {/* Centered Content Layer (behind the SVG mask) */}
+      {/* 3-layer logo wrapper */}
       <div
         style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '600px',
-          height: '250px',
+          position: 'relative',
+          width: '600px', // Enlarged by 50% (from 400px)
+          height: '60px',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          pointerEvents: 'none',
-          zIndex: 10
+          pointerEvents: 'none'
         }}
       >
-        {/* Logo Wrapper */}
-        <div
-          ref={logoWrapperRef}
+        {/* Left Layer: found */}
+        <img 
+          ref={leftRef}
+          src="/logo-center.svg"
+          alt="found text layer"
           style={{
             position: 'absolute',
             width: '600px',
-            maxWidth: '90vw',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            willChange: 'opacity, filter'
+            height: 'auto',
+            left: 0,
+            top: 0,
+            filter: 'invert(1)', // White logo on black background
+            clipPath: 'inset(0 65% 0 0%)',
+            willChange: 'transform, opacity'
           }}
-        >
-          <img 
-            ref={logoRef}
-            src="/logo-center.svg"
-            alt="founded logo center"
-            style={{
-              width: '600px',
-              maxWidth: '90vw',
-              height: 'auto'
-            }}
-          />
-        </div>
+        />
 
-        {/* Greeting Text */}
-        <div
-          ref={greetingTextRef}
+        {/* Center Layer: slash (/) */}
+        <img 
+          ref={centerRef}
+          src="/logo-center.svg"
+          alt="slash layer"
           style={{
             position: 'absolute',
-            fontFamily: "'Aeonik-SemiBold', sans-serif",
-            fontWeight: 600,
-            fontSize: '44px',
-            lineHeight: '1.3',
-            letterSpacing: '-0.03em',
-            color: '#000000',
-            textAlign: 'center',
-            willChange: 'opacity'
+            width: '600px',
+            height: 'auto',
+            left: 0,
+            top: 0,
+            filter: 'invert(1)',
+            clipPath: 'inset(0 56% 0 35%)',
+            willChange: 'transform, opacity'
           }}
-        >
-          Hi, there!<br />
-          You Found Us.
-        </div>
-      </div>
-
-      {/* Binocular Viewfinder SVG Overlay Mask */}
-      <svg
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          pointerEvents: 'none',
-          zIndex: 20
-        }}
-      >
-        <defs>
-          {/* Blur filter to create soft vignetting edge */}
-          <filter id="binoculars-blur">
-            <feGaussianBlur stdDeviation="25" />
-          </filter>
-          <mask id="binoculars-mask">
-            {/* White base makes everything visible (keeps the black overlay solid) */}
-            <rect width="100%" height="100%" fill="white" />
-            {/* Black circles cut transparent holes to reveal content behind */}
-            <g filter="url(#binoculars-blur)">
-              <circle
-                ref={leftCircleRef}
-                cx="50%"
-                cy="50%"
-                r="0"
-                fill="black"
-              />
-              <circle
-                ref={rightCircleRef}
-                cx="50%"
-                cy="50%"
-                r="0"
-                fill="black"
-              />
-            </g>
-          </mask>
-        </defs>
-        {/* Full-screen black rectangle masked by the binocular holes */}
-        <rect
-          width="100%"
-          height="100%"
-          fill="#000000"
-          mask="url(#binoculars-mask)"
         />
-      </svg>
+
+        {/* Right Layer: Founded */}
+        <img 
+          ref={rightRef}
+          src="/logo-center.svg"
+          alt="founded text layer"
+          style={{
+            position: 'absolute',
+            width: '600px',
+            height: 'auto',
+            left: 0,
+            top: 0,
+            filter: 'invert(1)',
+            clipPath: 'inset(0 0% 0 44%)',
+            willChange: 'transform, opacity'
+          }}
+        />
+      </div>
     </div>
   );
 }

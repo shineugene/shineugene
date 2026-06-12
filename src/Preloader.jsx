@@ -6,6 +6,12 @@ export default function Preloader({ onComplete }) {
   const logoContainerRef = useRef();
   const logoRef = useRef();
 
+  // Keep a stable reference to the onComplete callback to avoid triggering useEffect runs
+  const onCompleteRef = useRef(onComplete);
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+  }, [onComplete]);
+
   useEffect(() => {
     const ctx = gsap.context(() => {
       // Setup initial CSS properties via GSAP to ensure precision
@@ -17,8 +23,9 @@ export default function Preloader({ onComplete }) {
       });
       gsap.set(logoRef.current, {
         opacity: 1,
-        filter: 'invert(0)',
-        x: 40.7 // Offset to center the slash (at 39.83% of 400px width) in the 400px container
+        filter: 'invert(0) blur(0px)',
+        scale: 1,
+        x: 61 // Offset to center the slash (at 39.83% of 600px width) in the 600px container
       });
 
       const tl = gsap.timeline({
@@ -29,43 +36,47 @@ export default function Preloader({ onComplete }) {
             duration: 0.8,
             ease: 'power3.inOut',
             onComplete: () => {
-              if (onComplete) onComplete();
+              if (onCompleteRef.current) onCompleteRef.current();
             }
           });
         }
       });
 
       // --- Phase 1: 배경 반전 (White ➔ Black) 및 로고 컬러 스위치 (0s ~ 0.5s) ---
+      // We also transition the logo to scale 0.9 and blur 10px so that it starts Phase 2 at the specified target states
       tl.to(preloaderRef.current, {
         backgroundColor: '#000000',
         duration: 0.5,
         ease: 'power2.out'
       }, 0)
       .to(logoRef.current, {
-        filter: 'invert(1)',
+        filter: 'invert(1) blur(10px)',
+        scale: 0.9,
         duration: 0.5,
         ease: 'power2.out'
       }, 0);
 
-      // --- Phase 2: 마스크 오픈 및 텍스트 등장 (0.5s ~ 1.5s) ---
+      // --- Phase 2: 마스크 오픈, 스케일 업 및 블러 해제 (0.5s ~ 2.0s) ---
       tl.to(logoContainerRef.current, {
         clipPath: 'inset(0 0% 0 0%)',
-        duration: 1.0,
-        ease: 'power4.inOut'
+        duration: 1.5,
+        ease: 'expo.inOut'
       }, 0.5)
       .to(logoRef.current, {
         x: 0, // Slide the image back to its natural centered position as the mask opens
-        duration: 1.0,
-        ease: 'power4.inOut'
+        filter: 'invert(1) blur(0px)',
+        scale: 1.0,
+        duration: 1.5,
+        ease: 'expo.inOut'
       }, 0.5);
 
-      // --- Phase 3: 홀드 대기 (1.5s ~ 2.0s) ---
+      // --- Phase 3: 홀드 대기 (2.0s ~ 2.5s) ---
       tl.to({}, { duration: 0.5 }); // 0.5초 대기
 
     }, preloaderRef);
 
     return () => ctx.revert();
-  }, [onComplete]);
+  }, []); // Empty dependency array to ensure the animation timeline is created exactly once on mount
 
   return (
     <div 
@@ -83,22 +94,24 @@ export default function Preloader({ onComplete }) {
         justifyContent: 'center',
         alignItems: 'center',
         overflow: 'hidden',
-        userSelect: 'none'
+        userSelect: 'none',
+        willChange: 'transform, opacity'
       }}
     >
       <div
         ref={logoContainerRef}
         style={{
           position: 'absolute',
-          width: '400px',
-          height: '40px',
+          width: '600px', // Enlarged by 50% (from 400px)
+          height: '60px',  // Enlarged by 50% (from 40px)
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
           overflow: 'hidden',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center'
+          justifyContent: 'center',
+          willChange: 'transform, clip-path, opacity'
         }}
       >
         <img 
@@ -107,11 +120,11 @@ export default function Preloader({ onComplete }) {
           alt="founded logo center"
           style={{
             position: 'absolute',
-            width: '400px',
+            width: '600px', // Enlarged by 50% (from 400px)
             height: 'auto',
             left: 0,
             top: 0,
-            willChange: 'transform, filter'
+            willChange: 'transform, filter, opacity'
           }}
         />
       </div>

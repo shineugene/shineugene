@@ -6,7 +6,9 @@ import Preloader from './Preloader';
 import './App.css';
 
 export default function App() {
-  const [isPreloaderActive, setIsPreloaderActive] = useState(true);
+  const [isPreloaderActive, setIsPreloaderActive] = useState(() => {
+    return sessionStorage.getItem('hasSeenPreloader') !== 'true';
+  });
   const [isHovered, setIsHovered] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
   const [isCircleReady, setIsCircleReady] = useState(false);
@@ -285,7 +287,10 @@ export default function App() {
 
       {/* Preloader overlay container */}
       {isPreloaderActive && (
-        <Preloader onComplete={() => setIsPreloaderActive(false)} />
+        <Preloader onComplete={() => {
+          setIsPreloaderActive(false);
+          sessionStorage.setItem('hasSeenPreloader', 'true');
+        }} />
       )}
     </div>
   );

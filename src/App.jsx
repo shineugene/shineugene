@@ -155,9 +155,9 @@ export default function App() {
             userSelect: 'none'
           }}
         >
+          <span style={{ cursor: 'pointer' }}>About</span>
           <span style={{ cursor: 'pointer' }}>Works</span>
-          <span style={{ cursor: 'pointer' }}>Things</span>
-          <span style={{ cursor: 'pointer' }}>Activity</span>
+          <span style={{ cursor: 'pointer' }}>Contact</span>
         </div>
       )}
 

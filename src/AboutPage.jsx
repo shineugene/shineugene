@@ -218,8 +218,8 @@ export default function AboutPage() {
           right: '40px',
           zIndex: 2,
           fontFamily: "'BookkGothic-Bold', sans-serif",
-          fontSize: '30px',
-          lineHeight: 1.5,
+          fontSize: '40px',
+          lineHeight: '43px',
           color: '#1d1d1d',
           letterSpacing: '-0.03em',
           textAlign: 'left',
@@ -227,37 +227,9 @@ export default function AboutPage() {
           userSelect: 'none'
         }}
       >
-        {lang === 'ko' ? (
-          <>
-            <p style={{ margin: '0 0 16px 0' }}>
-              파운드파운디드는 2016년 설립된 크리에이티브 디자인 스튜디오로, 산업통상자원부와 한국디자인진흥원이 선정한 우수디자인전문기업입니다.
-            </p>
-            <p style={{ margin: '0 0 16px 0' }}>
-              공간디자인, 제품디자인, 가구디자인, 브랜딩, 그래픽 디자인, UX/UI 디자인 등 다양한 분야를 아우르며 통합적인 디자인 경험을 제공합니다.
-            </p>
-            <p style={{ margin: '0 0 16px 0' }}>
-              삼성전자, 제일기획, 현대카드, LG생활건강, 삼성물산, 데싱디바, 롯데케미칼 등 국내외 주요 기업들과 협업하며 대한민국을 대표하는 디자인 스튜디오로 성장해왔습니다.
-            </p>
-            <p style={{ margin: 0 }}>
-              파운드파운디드는 기획부터 디자인 전략 수립, 디자인, 양산 솔루션 까지 전 과정을 유연하게 아우르며, 창의적이고 완성도 높은 사용자 경험을 제안합니다.
-            </p>
-          </>
-        ) : (
-          <>
-            <p style={{ margin: '0 0 16px 0' }}>
-              Founded in 2016, Found Founded is a creative design studio recognized as an Excellent Design Specialized Company by the Ministry of Trade, Industry and Energy and the Korea Institute of Design Promotion.
-            </p>
-            <p style={{ margin: '0 0 16px 0' }}>
-              We provide integrated design experiences across diverse fields including spatial design, product design, furniture design, branding, graphic design, and UX/UI design.
-            </p>
-            <p style={{ margin: '0 0 16px 0' }}>
-              Collaborating with major domestic and international companies such as Samsung Electronics, Cheil Worldwide, Hyundai Card, LG Household & Health Care, Samsung C&T, Dessini Diva, and Lotte Chemical, we have grown into one of Korea's leading design studios.
-            </p>
-            <p style={{ margin: 0 }}>
-              Found Founded encompasses the entire process from planning and design strategy development to design execution and production solutions with flexibility, proposing creative and highly refined user experiences.
-            </p>
-          </>
-        )}
+        {lang === 'ko'
+          ? "파운드파운디드는 2016년 설립된 크리에이티브 디자인 스튜디오로, 산업통상자원부와 한국디자인진흥원이 선정한 우수디자인전문기업입니다. 공간디자인, 제품디자인, 가구디자인, 브랜딩, 그래픽 디자인, UX/UI 디자인 등 다양한 분야를 아우르며 통합적인 디자인 경험을 제공합니다. 삼성전자, 제일기획, 현대카드, LG생활건강, 삼성물산, 데싱디바, 롯데케미칼 등 국내외 주요 기업들과 협업하며 대한민국을 대표하는 디자인 스튜디오로 성장해왔습니다. 파운드파운디드는 기획부터 디자인 전략 수립, 디자인, 양산 솔루션 까지 전 과정을 유연하게 아우르며, 창의적이고 완성도 높은 사용자 경험을 제안합니다."
+          : "Founded in 2016, Found Founded is a creative design studio recognized as an Excellent Design Specialized Company by the Ministry of Trade, Industry and Energy and the Korea Institute of Design Promotion. We provide integrated design experiences across diverse fields including spatial design, product design, furniture design, branding, graphic design, and UX/UI design. Collaborating with major domestic and international companies such as Samsung Electronics, Cheil Worldwide, Hyundai Card, LG Household & Health Care, Samsung C&T, Dessini Diva, and Lotte Chemical, we have grown into one of Korea's leading design studios. Found Founded encompasses the entire process from planning and design strategy development to design execution and production solutions with flexibility, proposing creative and highly refined user experiences."}
       </div>
 
       {/* Layer 3: Physics HTML Text boxes */}

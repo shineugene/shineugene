@@ -133,6 +133,34 @@ export default function App() {
         />
       </div>
 
+      {/* Fixed Top Center Navigation Menu (Works, Things, Activity) */}
+      {currentView === 'gallery' && selectedCardIndex === null && (
+        <div 
+          style={{
+            position: 'absolute',
+            top: '40px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            display: 'flex',
+            gap: '40px',
+            height: '31.68px',
+            alignItems: 'center',
+            fontFamily: "'Aeonik-SemiBold', sans-serif",
+            fontWeight: 600,
+            fontSize: '20px',
+            letterSpacing: '-0.03em',
+            color: '#1d1d1d',
+            zIndex: 10,
+            pointerEvents: 'auto',
+            userSelect: 'none'
+          }}
+        >
+          <span style={{ cursor: 'pointer' }}>Works</span>
+          <span style={{ cursor: 'pointer' }}>Things</span>
+          <span style={{ cursor: 'pointer' }}>Activity</span>
+        </div>
+      )}
+
       {/* Fixed Center Text Overlay with Fade-in and customized Aeonik font */}
       <div 
         style={{
@@ -140,19 +168,28 @@ export default function App() {
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          fontFamily: "'Aeonik', sans-serif",
-          fontWeight: 600,
-          fontSize: '28px',
-          color: '#1d1d1d',
-          letterSpacing: '-0.03em',
-          pointerEvents: 'none',
-          whiteSpace: 'nowrap',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
           zIndex: 5,
           opacity: (isCircleReady && selectedCardIndex === null && currentView === 'gallery') ? 1 : 0,
-          transition: 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1)'
+          transition: 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+          pointerEvents: 'none'
         }}
       >
-        Discover the value in essence.
+        {/* Existing Title Text */}
+        <div 
+          style={{
+            fontFamily: "'Aeonik', sans-serif",
+            fontWeight: 600,
+            fontSize: '28px',
+            color: '#1d1d1d',
+            letterSpacing: '-0.03em',
+            whiteSpace: 'nowrap'
+          }}
+        >
+          Discover the value in essence.
+        </div>
       </div>
 
       {/* Extreme Minimalist Overlay: Only Left & Right Logos at the Top Ends */}

@@ -138,7 +138,7 @@ export default function App() {
         <div 
           style={{
             position: 'absolute',
-            top: '40px',
+            top: '45px',
             left: '50%',
             transform: 'translateX(-50%)',
             display: 'flex',
@@ -147,7 +147,7 @@ export default function App() {
             alignItems: 'center',
             fontFamily: "'Aeonik-SemiBold', sans-serif",
             fontWeight: 600,
-            fontSize: '20px',
+            fontSize: '30px',
             letterSpacing: '-0.03em',
             color: '#1d1d1d',
             zIndex: 10,

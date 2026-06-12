@@ -191,9 +191,9 @@ export default function App() {
         {/* Existing Title Text */}
         <div 
           style={{
-            fontFamily: "'Aeonik-Regular', sans-serif",
-            fontWeight: 'normal',
-            fontSize: '25.2px',
+            fontFamily: "'Aeonik-SemiBold', sans-serif",
+            fontWeight: 600,
+            fontSize: '20.2px',
             color: '#333333',
             letterSpacing: '-0.03em',
             whiteSpace: 'nowrap'

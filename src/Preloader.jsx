@@ -26,11 +26,15 @@ export default function Preloader({ onComplete }) {
       });
       gsap.set(leftRef.current, {
         autoAlpha: 0,
-        x: 10 // Pushed slightly to the right (towards the slash) initially
+        x: 30, // Pushed right (closer to center slash) initially
+        clipPath: 'inset(0 100% 0 35%)',
+        filter: 'invert(1) blur(5px)'
       });
       gsap.set(rightRef.current, {
         autoAlpha: 0,
-        x: -10 // Pushed slightly to the left (towards the slash) initially
+        x: -30, // Pushed left (closer to center slash) initially
+        clipPath: 'inset(0 56% 0 100%)',
+        filter: 'invert(1) blur(5px)'
       });
 
       const tl = gsap.timeline({
@@ -49,31 +53,38 @@ export default function Preloader({ onComplete }) {
       }, 0);
 
       // --- Phase 2: 좌측 'found' 등장 (0.5초) ---
-      // Fades in and slides out from the center slash (x: 10 -> 0)
+      // Slides out from the central slash boundary (x: 30 -> 0)
+      // Simultaneously opens clipPath from center out to the left and unblurs
       tl.to(leftRef.current, {
         autoAlpha: 1,
         x: 0,
+        clipPath: 'inset(0 65% 0 0%)',
+        filter: 'invert(1) blur(0px)',
         duration: 1.2,
         ease: 'expo.out'
       }, 0.5);
 
       // --- Phase 3: 우측 'Founded' 등장 (0.8초) ---
-      // Fades in and slides out from the center slash (x: -10 -> 0)
+      // Slides out from the central slash boundary (x: -30 -> 0)
+      // Simultaneously opens clipPath from center out to the right and unblurs
       tl.to(rightRef.current, {
         autoAlpha: 1,
         x: 0,
+        clipPath: 'inset(0 0% 0 44%)',
+        filter: 'invert(1) blur(0px)',
         duration: 1.2,
         ease: 'expo.out'
       }, 0.8);
 
-      // --- Phase 4: 화면 입장 (2.8초) ---
+      // --- Phase 4: 화면 입장 (2.4초) ---
       // The fully completed logo is formed at 2.0s (0.8s + 1.2s).
-      // We linger for 0.8s to build anticipation (2.0s -> 2.8s), then fade out the preloader overlay.
+      // Linger for 0.4s (reduced from 0.8s) to build anticipation (2.0s -> 2.4s).
+      // Then fade out the preloader overlay over 0.5s (reduced from 1.0s).
       tl.to(preloaderRef.current, {
         autoAlpha: 0,
-        duration: 1.0,
+        duration: 0.5,
         ease: 'power2.inOut'
-      }, 2.8);
+      }, 2.4);
 
     }, preloaderRef);
 
@@ -119,15 +130,15 @@ export default function Preloader({ onComplete }) {
           alt="found text layer"
           style={{
             position: 'absolute',
-            width: '900px', // Enlarged by 50% (from 600px)
+            width: '900px',
             height: 'auto',
             left: 0,
             top: 0,
-            filter: 'invert(1)', // White logo on black background
-            clipPath: 'inset(0 65% 0 0%)',
+            filter: 'invert(1) blur(5px)', // Initial blur for FOUC protection
+            clipPath: 'inset(0 100% 0 35%)', // Initial mask state
             opacity: 0,
             visibility: 'hidden',
-            willChange: 'transform, opacity'
+            willChange: 'transform, opacity, clip-path, filter'
           }}
         />
 
@@ -138,7 +149,7 @@ export default function Preloader({ onComplete }) {
           alt="slash layer"
           style={{
             position: 'absolute',
-            width: '900px', // Enlarged by 50% (from 600px)
+            width: '900px',
             height: 'auto',
             left: 0,
             top: 0,
@@ -157,15 +168,15 @@ export default function Preloader({ onComplete }) {
           alt="founded text layer"
           style={{
             position: 'absolute',
-            width: '900px', // Enlarged by 50% (from 600px)
+            width: '900px',
             height: 'auto',
             left: 0,
             top: 0,
-            filter: 'invert(1)',
-            clipPath: 'inset(0 0% 0 44%)',
+            filter: 'invert(1) blur(5px)', // Initial blur for FOUC protection
+            clipPath: 'inset(0 56% 0 100%)', // Initial mask state
             opacity: 0,
             visibility: 'hidden',
-            willChange: 'transform, opacity'
+            willChange: 'transform, opacity, clip-path, filter'
           }}
         />
       </div>

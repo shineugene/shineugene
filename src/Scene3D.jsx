@@ -546,6 +546,7 @@ function ImageCard({
           map={texture}
           toneMapped={false}
           transparent
+          opacity={0} // Force initial opacity 0 before preloader fades out
           side={THREE.DoubleSide}
         />
       </mesh>

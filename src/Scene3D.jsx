@@ -606,7 +606,7 @@ export default function Scene3D({
   const isSelected = selectedCardIndex !== null;
 
   return (
-    <div className="canvas-container" style={{ width: '100vw', height: '100vh', overflow: 'hidden', position: 'absolute', top: 0, left: 0 }}>
+    <div className="canvas-container" style={{ width: '100vw', height: '100vh', overflow: 'hidden', position: 'absolute', top: 0, left: 0, transform: 'translateY(5px)' }}>
       <Canvas
         orthographic
         camera={{ zoom: 230, position: [0, 0, 35], near: 0.1, far: 1000 }}

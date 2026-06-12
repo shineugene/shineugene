@@ -142,7 +142,7 @@ export default function App() {
             left: '50%',
             transform: 'translateX(-50%)',
             display: 'flex',
-            gap: '40px',
+            gap: '48px',
             height: '31.68px',
             alignItems: 'center',
             fontFamily: "'Aeonik-SemiBold', sans-serif",
@@ -165,7 +165,7 @@ export default function App() {
       <div 
         style={{
           position: 'absolute',
-          top: '50%',
+          top: 'calc(50% + 5px)',
           left: '50%',
           transform: 'translate(-50%, -50%)',
           display: 'flex',

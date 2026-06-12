@@ -7,8 +7,8 @@ import * as THREE from 'three';
 const IMAGE_NUMBERS = Array.from({ length: 20 }, (_, i) => String(i + 1).padStart(2, '0'));
 const TOTAL = IMAGE_NUMBERS.length;
 
-// Radius slightly expanded to 2.05 (~6% expansion from 1.936) to give cards breathing room
-const RADIUS_CIRCLE = 2.05;
+// Radius slightly expanded to 2.05, and now reduced by 5% to 1.9475 for layout tuning
+const RADIUS_CIRCLE = 1.9475;
 const ORBIT_SPEED = 0.05; // ~58% speed reduction for calm movement
 
 function ImageCard({ 
@@ -22,7 +22,8 @@ function ImageCard({
   isHoverPaused,
   selectedCardIndex,
   setSelectedCardIndex,
-  setIsClicked
+  setIsClicked,
+  isPreloaderActive = false
 }) {
   const texture = useTexture(url);
   const meshRef = useRef();
@@ -58,18 +59,22 @@ function ImageCard({
     }
   }, [texture]);
 
-  // Opening Fade-in: Opacity 0 -> 1 with random stagger delays on mount
+  // Opening Fade-in: Opacity 0 -> 1 with random stagger delays triggered after preloader is inactive
   useEffect(() => {
     if (materialRef.current) {
-      materialRef.current.opacity = 0;
-      gsap.to(materialRef.current, {
-        opacity: 1.0,
-        duration: 1.0,
-        delay: Math.random() * 0.4,
-        ease: 'power2.out'
-      });
+      if (isPreloaderActive) {
+        materialRef.current.opacity = 0;
+      } else {
+        gsap.to(materialRef.current, {
+          opacity: 1.0,
+          duration: 1.0,
+          delay: Math.random() * 0.4,
+          ease: 'power2.out',
+          overwrite: 'auto'
+        });
+      }
     }
-  }, []);
+  }, [isPreloaderActive]);
 
   // Transition: linear/scattered <-> circle
   useEffect(() => {
@@ -556,7 +561,8 @@ export default function Scene3D({
   setIsCircleReady,
   selectedCardIndex,
   setSelectedCardIndex,
-  onBackgroundClick
+  onBackgroundClick,
+  isPreloaderActive = false
 }) {
   // Shared hover paused stop switch ref
   const isHoverPaused = useRef(false);
@@ -627,6 +633,7 @@ export default function Scene3D({
             selectedCardIndex={selectedCardIndex}
             setSelectedCardIndex={setSelectedCardIndex}
             setIsClicked={setIsClicked}
+            isPreloaderActive={isPreloaderActive}
           />
         ))}
 

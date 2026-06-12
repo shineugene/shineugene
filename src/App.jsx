@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Scene3D from './Scene3D';
 import DetailPage from './DetailPage';
+import AboutPage from './AboutPage';
+import Preloader from './Preloader';
 import './App.css';
 
 export default function App() {
+  const [isPreloaderActive, setIsPreloaderActive] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
   const [isCircleReady, setIsCircleReady] = useState(false);
@@ -62,6 +65,11 @@ export default function App() {
 
         setCurrentView('detail');
         setShouldRenderDetail(true);
+      } else if (hash.startsWith('#/about')) {
+        setCurrentView('about');
+        setSelectedCardIndex(null);
+        setActiveDetailIndex(null);
+        setShouldRenderDetail(false);
       } else {
         setCurrentView('gallery');
         setSelectedCardIndex(null); // Smoothly slide card back when returning to gallery
@@ -130,6 +138,7 @@ export default function App() {
           selectedCardIndex={selectedCardIndex}
           setSelectedCardIndex={setSelectedCardIndex}
           onBackgroundClick={handleBackgroundClick}
+          isPreloaderActive={isPreloaderActive}
         />
       </div>
 
@@ -147,7 +156,7 @@ export default function App() {
             alignItems: 'center',
             fontFamily: "'Aeonik-SemiBold', sans-serif",
             fontWeight: 600,
-            fontSize: '25px',
+            fontSize: '30px',
             letterSpacing: '-0.03em',
             color: '#1d1d1d',
             zIndex: 10,
@@ -155,7 +164,7 @@ export default function App() {
             userSelect: 'none'
           }}
         >
-          <span style={{ cursor: 'pointer' }}>About</span>
+          <span style={{ cursor: 'pointer' }} onClick={() => window.location.hash = '#/about'}>About</span>
           <span style={{ cursor: 'pointer' }}>Works</span>
           <span style={{ cursor: 'pointer' }}>Contact</span>
         </div>
@@ -180,10 +189,10 @@ export default function App() {
         {/* Existing Title Text */}
         <div 
           style={{
-            fontFamily: "'Aeonik', sans-serif",
-            fontWeight: 600,
-            fontSize: '28px',
-            color: '#1d1d1d',
+            fontFamily: "'Aeonik-Regular', sans-serif",
+            fontWeight: 'normal',
+            fontSize: '25.2px',
+            color: '#333333',
             letterSpacing: '-0.03em',
             whiteSpace: 'nowrap'
           }}
@@ -245,6 +254,20 @@ export default function App() {
         )}
       </div>
 
+      {/* About Page Overlay */}
+      {currentView === 'about' && (
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: 30,
+        }}>
+          <AboutPage />
+        </div>
+      )}
+
       {/* Global Copyright Overlay */}
       <div style={{
         position: 'fixed',
@@ -259,6 +282,11 @@ export default function App() {
       }}>
         <span style={{ fontFamily: 'sans-serif' }}>©</span> 2026 foundfounded. All rights reserved.
       </div>
+
+      {/* Preloader overlay container */}
+      {isPreloaderActive && (
+        <Preloader onComplete={() => setIsPreloaderActive(false)} />
+      )}
     </div>
   );
 }

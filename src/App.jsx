@@ -138,7 +138,7 @@ export default function App() {
         <div 
           style={{
             position: 'absolute',
-            top: '45px',
+            top: '43px',
             left: '50%',
             transform: 'translateX(-50%)',
             display: 'flex',
@@ -147,7 +147,7 @@ export default function App() {
             alignItems: 'center',
             fontFamily: "'Aeonik-SemiBold', sans-serif",
             fontWeight: 600,
-            fontSize: '30px',
+            fontSize: '25px',
             letterSpacing: '-0.03em',
             color: '#1d1d1d',
             zIndex: 10,
@@ -257,7 +257,7 @@ export default function App() {
         pointerEvents: 'none',
         zIndex: 100
       }}>
-        ©foundfounded. All rights reserved.
+        <span style={{ fontFamily: 'sans-serif' }}>©</span> 2026 foundfounded. All rights reserved.
       </div>
     </div>
   );
